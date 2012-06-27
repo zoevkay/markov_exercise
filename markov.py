@@ -1,22 +1,23 @@
-import random, string
-
+import random, string, markovddbraz, sys
 
 # EDIT README TO REFLECT CHANGES
 
 def process_file(filename):
+	""" process_file(string) -> dictionary 
+	The function reads a file and returns a dictionary built like this:
+	{(word1, word2):[word3], (word2, word3): [word4, word5]}. If two consecutive words appear 
+	more then once, it adds the third word as a value to that key.
+	"""
 	dictionary = {}
-
-	newfile = open(filename)
-	line = newfile.read()
-	newfile.close()
-	
+	with open(filename) as newfile:
+		line = newfile.read()
 	wordlist = line.split()
+
 	if len(wordlist) > 0:
-		n = 0
 		#this is our loop to create a markov dictionary.
-		for n in range(len(wordlist)-2):
-			prefix =  (wordlist[n], wordlist[n+1])
-			suffix = wordlist[n+2]
+		for i in range(len(wordlist)-2):
+			prefix =  (wordlist[i], wordlist[i+1])
+			suffix = wordlist[i+2]
 			if dictionary.get(prefix) is not None:
 				# if current prefix is a key, add current suffix to list of values.
 				dictionary[prefix].append(suffix)
@@ -24,18 +25,21 @@ def process_file(filename):
 				# adds a new key (current prefix) and begins a list of values with our current suffix.
 				dictionary[prefix] = [suffix]
 
-	else:
-		pass
 	return dictionary
-
  
-def shift(muple, anything):
-	#The function shift take a tuple and a string and return a new reversed tuple. (1,2) + 3 return (2,3)
-	new_tuple = (muple[1],anything)
+def shift(original_tuple, anything):
+	""" shift(tuple, string) -> tuple
+	The function shift take a tuple and a string and return a new reversed tuple. 
+	shift((1,2), 3) -> (2,3)
+	"""
+	new_tuple = (original_tuple[1],anything)
 	return new_tuple
 
 def build_sentence(mapping):
-	# take random key from dictionary, create a string with key and one value.
+	""" build_sentence(dictionary) -> string
+	The function takes a random key from dictionary, creates a string with the key and one
+	random value from that key. It repeats this process until last string ends with !, ?, or .
+	"""
 	terminators = ['!', '?', '.']
 	prefix = random.choice(mapping.keys())
 	suffix = random.choice(mapping[prefix])
@@ -48,34 +52,48 @@ def build_sentence(mapping):
 	return sentence
 
 def build_paragraph(dictionary, number):
-	sentences = []
-	for n in range(number):
-		sentences.append(build_sentence(dictionary))
+	""" build_paragraph(dictionary, integer) -> string
+	The function calls build_sentence() with the dictionary the number of times
+	specified by integer. It joins the sentences and returns one string.
+	"""
+	sentences = [build_sentence(dictionary) for n in range(number)]
 	paragraph = string.join(sentences)
 	return paragraph
 
 
 def build_tweet(dictionary):
-	#use build_sentence() to add sentences as long as whole text is less than 140 characters.
+	""" build_tweet(dictionary) -> string
+	This function calls build_sentence() to add sentences for as long as the
+	string is less than 140 characters.
+	"""
 	tweet = ""
-	while len(tweet) <= 140:
+	while True:
 		new_tweet = build_sentence(dictionary)
-		if len(new_tweet) >140:
+		if len(new_tweet) > 140:
 			continue
-		elif len(tweet+new_tweet) > 140:
-			return tweet
+		elif len(new_tweet + tweet) > 140:
+			break	
 		else:
 			if tweet == "":
 				tweet += new_tweet
 			else: 
 				tweet += " " + new_tweet
-
+	return tweet
 
 def main():
-	d = process_file("grimmsfairytales.txt")
-	paragraph = build_paragraph(d, 10)
-	#tweet = build_tweet(d)
-	print paragraph
+	script, filename, output_style = sys.argv
+
+	d = process_file(filename)
+	if output_style == "paragraph":
+		paragraph = build_paragraph(d, 10)
+		print paragraph
+	elif output_style == "tweet":
+		tweet = build_tweet(d)
+		print tweet
+		#markovddbraz.tweet(tweet)
+	else:
+		print "Choose between paragraph and tweet"
 
 if __name__ == "__main__":
 	main()
+
