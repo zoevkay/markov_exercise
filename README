@@ -1,7 +1,5 @@
 # Introduction
 
-In this exercise, you'll be writing a program that performs Markov analysis on text files and produces text that mimics the style of the original author.
+This Python script, markov.py, takes a block of text and uses word connections to create sentences and paragraphs that sound like the text, but are unique (and nonesensical).
 
-Start this exercise by running:
-
-    ./stage1
+This script uses Tweepy and Twitter's API to send markov tweets to a twitter account.

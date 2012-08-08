@@ -1,6 +1,4 @@
-import random, string, markovddbraz, sys
-
-# EDIT README TO REFLECT CHANGES
+import random, string, twitterauth, sys
 
 def process_file(filename):
 	""" process_file(string) -> dictionary 
@@ -90,7 +88,7 @@ def main():
 	elif output_style == "tweet":
 		tweet = build_tweet(d)
 		print tweet
-		#markovddbraz.tweet(tweet)
+		twitterauth.tweet(tweet)
 	else:
 		print "Choose between paragraph and tweet"
 
