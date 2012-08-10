@@ -1,4 +1,4 @@
-import random, string, twitterauth, sys
+import random, string, hblotauth, sys
 
 def process_file(filename):
 	""" process_file(string) -> dictionary 
@@ -88,7 +88,7 @@ def main():
 	elif output_style == "tweet":
 		tweet = build_tweet(d)
 		print tweet
-		twitterauth.tweet(tweet)
+		hblotauth.tweet(tweet)
 	else:
 		print "Choose between paragraph and tweet"
 

@@ -1,0 +1,14 @@
+README.txt
+setup.cfg
+pip-egg-info/django_pretty_times.egg-info/PKG-INFO
+pip-egg-info/django_pretty_times.egg-info/SOURCES.txt
+pip-egg-info/django_pretty_times.egg-info/dependency_links.txt
+pip-egg-info/django_pretty_times.egg-info/not-zip-safe
+pip-egg-info/django_pretty_times.egg-info/requires.txt
+pip-egg-info/django_pretty_times.egg-info/top_level.txt
+pretty_times/__init__.py
+pretty_times/models.py
+pretty_times/pretty.py
+pretty_times/tests.py
+pretty_times/templatetags/__init__.py
+pretty_times/templatetags/prettytimes_tags.py
